@@ -1,7 +1,6 @@
 //This is an optimized aproach of max subarray sum (more optimized than prefix sum)
 //Time complexity : O(n)
 
-package JavaDemo.ArraysQuestions;
 
 
 public class KadanesAlgorithm {

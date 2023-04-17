@@ -1,4 +1,4 @@
-package JavaDemo;
+
 import java.util.Scanner;
 
 public class binarySearch {

@@ -1,29 +1,27 @@
-package JavaDemo;
+import javax.swing.text.MaskFormatter;
+
 class Practice {
-
-    public static void printSubarrays(int arr[]) {
-
-        int currSum = 0;
+    public static void Kadanes(int arr[]) {
         int maxSum = Integer.MIN_VALUE;
+        int currSum = 0;
 
         for(int i=0;i<arr.length;i++) {
-            for(int j=i;j<arr.length;j++) {
+             currSum += arr[i];
+
+             if(currSum < 0) {
                 currSum = 0;
-                for(int k=i;k<=j;k++) {
-                    currSum += arr[k];
-                }
-                System.out.println("Current sum = "+currSum);
-                maxSum = Math.max(maxSum,currSum);
-            }
+             }
+
+             maxSum = Math.max(currSum,maxSum);
         }
 
-        System.out.println("Max SubArray Sum  = "+maxSum);
-
-
+        System.out.println("Kadane's algo : "+maxSum);
     }
     public static void main(String[] args) {
-        int arr[] = {1,-2,6,-1,3};
-        printSubarrays(arr);
+        int arr[] = {1,-2,30,4};
+
+
+        Kadanes(arr);
 
 
     }
