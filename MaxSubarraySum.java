@@ -1,7 +1,9 @@
-class Practice {
+//This is an Brute Force Approach
+//It's alternative & optimized approach is "Prefix Sum"
 
-    public static void printSubarrays(int arr[]) {
-
+public class MaxSubarraySum {
+    
+    public static int maxSubArraySum(int arr[]) {
         int currSum = 0;
         int maxSum = Integer.MIN_VALUE;
 
@@ -11,19 +13,15 @@ class Practice {
                 for(int k=i;k<=j;k++) {
                     currSum += arr[k];
                 }
-                System.out.println("Current sum = "+currSum);
                 maxSum = Math.max(maxSum,currSum);
             }
         }
 
-        System.out.println("Max SubArray Sum  = "+maxSum);
-
-
+        return maxSum;
     }
     public static void main(String[] args) {
         int arr[] = {1,-2,6,-1,3};
-        printSubarrays(arr);
 
-
+        System.out.println("The maximum subarray sum is : "+maxSubArraySum(arr));
     }
 }
