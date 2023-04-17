@@ -1,3 +1,4 @@
+package ArraysQuestions;
 //This is an Brute Force Approach
 //It's alternative & optimized approach is "Prefix Sum"
 

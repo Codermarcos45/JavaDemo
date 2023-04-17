@@ -1,3 +1,4 @@
+package ArraysQuestions;
 //Pairs in an array
 /*
  arr[] = {1,2,3,4}

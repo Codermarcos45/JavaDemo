@@ -1,3 +1,4 @@
+package ArraysQuestions;
 public class ReverseArray {
     
     public static void reverseOfAnArray(int arr[]) {

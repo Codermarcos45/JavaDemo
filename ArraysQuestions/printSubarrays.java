@@ -1,3 +1,4 @@
+package ArraysQuestions;
 //print all subarrays, print total number of subarrays, print total sum of the subarrys
 //print the maximum sum & minimum sum
 
