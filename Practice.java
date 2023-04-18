@@ -1,28 +1,25 @@
-import javax.swing.text.MaskFormatter;
-
 class Practice {
-    public static void Kadanes(int arr[]) {
-        int maxSum = Integer.MIN_VALUE;
-        int currSum = 0;
 
-        for(int i=0;i<arr.length;i++) {
-             currSum += arr[i];
+    public static void insertionSort(int arr[]) {
+        
+        for(int i=1;i<arr.length;i++) {
+            int current = arr[i];
+            int j=i-1;
 
-             if(currSum < 0) {
-                currSum = 0;
-             }
-
-             maxSum = Math.max(currSum,maxSum);
+            while(j >=0 && current < arr[j]) {
+                arr[j+1] = arr[j];
+                j--;
+            }
+            //placement
+            arr[j+1] = current;
         }
-
-        System.out.println("Kadane's algo : "+maxSum);
     }
     public static void main(String[] args) {
-        int arr[] = {1,-2,30,4};
-
-
-        Kadanes(arr);
-
-
+        int arr[] = {6,3,2,1,5,4};
+        insertionSort(arr);
+        for(int i=0;i<arr.length;i++) {
+            System.out.print(arr[i]+" ");
+        }
+        
     }
 }
