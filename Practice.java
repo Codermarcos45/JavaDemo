@@ -1,31 +1,11 @@
-import java.nio.charset.MalformedInputException;
+class Practice {
+    public static int clearRangeOfBits(int n, int sI,int eI) {
+        int a = (~0)<<eI+1;
+        int b = (1<<sI)-1;
 
-//remove duplicates : "apnacollege" >>> "apncoleg"
-
-class Practice  {
-    public static void firstUpperCase(String str) {
-        StringBuilder sb = new StringBuilder("");
-
-        sb.append(Character.toUpperCase(str.charAt(0)));
-        
-        for(int i=1;i<str.length();i++) {
-
-            if(str.charAt(i) == ' ' && i < str.length()-1) {
-                sb.append(str.charAt(i));
-                i++;
-                sb.append(Character.toUpperCase(str.charAt(i)));
-            } else {
-                sb.append(str.charAt(i));
-            }
-
-        }
-
-        System.out.println(sb);
+        return n & (a|b);
     }
     public static void main(String[] args) {
-        String str = "hi, i am shradha";
-        firstUpperCase(str);
-
-
+        System.out.println(clearRangeOfBits(10, 2, 5));
     }
-}
+}   
