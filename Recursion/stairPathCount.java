@@ -1,13 +1,12 @@
 import java.util.Scanner;
 
-public class Practice {
+public class stairPathCount {
     
     public static int stairPath(int n) {
         //base case 
-        if(n==1||n==2) return n;
-        if(n==3) return 4;
+        if(n<=2) return n;
 
-        return stairPath(n-1) + stairPath(n-2) + stairPath(n-3);
+        return stairPath(n-1) + stairPath(n-2);
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
