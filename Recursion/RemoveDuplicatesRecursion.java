@@ -1,6 +1,6 @@
 package Recursion;
 
-public class removeDuplicates {
+public class RemoveDuplicatesRecursion {
     
     public static void remDup(String str, int idx, StringBuilder sb, boolean map[]) {
         if(idx == str.length()) {

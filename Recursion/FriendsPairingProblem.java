@@ -7,7 +7,7 @@ package Recursion;
  paired only once. Find out the total number of ways in which friends can remain or can be paired up.
  */
 
-public class FriendsPairingProblema {
+public class FriendsPairingProblem {
 
     public static int friendsPairings(int n) {
         //base case
