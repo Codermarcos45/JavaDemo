@@ -1,31 +1,68 @@
+
+
 public class Practice {
-    public static int sortedSearch(int arr[],int sI,int eI,int tar) {
-        if(sI>eI) return -1;
+    static int count = 0;
+    public static void nQueens(char board[][],int row) {
+        //base case
+        if(row == board.length) {
+            printArr(board);
+            ++count;
+            return;
+        }
 
-        int mid = sI + (eI-sI)/2;
-
-        if(arr[mid] == tar) return mid;
-
-        if(arr[sI] <= arr[mid] && arr[mid] <= arr[eI]) {
-            
-            if(arr[sI] <= tar && tar <= arr[mid-1]) {
-                return sortedSearch(arr, sI, mid-1, tar);
-            } else {
-                return sortedSearch(arr, mid+1, eI, tar);
-            }
-        } else {
-            if(arr[mid+1] <= tar && tar <= arr[eI]) {
-                return sortedSearch(arr, mid+1, eI, tar);
-            } else {
-                return sortedSearch(arr, sI, mid-1, tar);
+        for(int j=0;j<board.length;j++) {
+            if(isSafe(board,row,j)) {
+                board[row][j] = 'Q';
+                nQueens(board, row+1);
+                board[row][j] = '+';
             }
         }
     }
+    
+    public static boolean isSafe(char board[][],int row,int col) {
+
+        //vertical up
+        for(int i=row-1;i>=0;i--) {
+            if(board[i][col] == 'Q') return false;
+        } 
+
+        //diagonal left
+        for(int i=row-1,j=col-1;i>=0 && j>=0; i--,j--) {
+            if(board[i][j] == 'Q') return false;
+        }
+
+        //diagonal right
+        for(int i=row-1,j=col+1; i>=0 && j<=board[0].length-1;i--,j++) {
+            if(board[i][j] == 'Q') return false;
+        }
+
+        return true;
+    }
+
+    public static void printArr(char board[][]) {
+        System.out.println("---- chess board ----"); 
+        for(int i=0;i<board.length;i++) {
+            for(int j=0;j<board[0].length;j++) {
+                System.out.print(board[i][j]+" ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
-        int arr[] = {4,5,6,7,0,1,2,3};
-        int tar = 4;
+        int n = 4;
 
-        System.out.println("Index : "+sortedSearch(arr, 0, arr.length-1, tar));
+        char board[][] = new char[n][n];
 
+        for(int i=0;i<board.length;i++) {
+            for(int j=0;j<board[0].length;j++) {
+                board[i][j] = '+';
+            }
+        }
+
+        // printArr(board);
+        nQueens(board, 0);
+        System.out.println("Ways : "+count);
     }
 }

@@ -3,7 +3,7 @@
  1st function takes 4 parameters & 2nd function takes only 2 parameters but there's no major difference in the logic.
  Each function performs same task with almost same time complexity. 
  */
-package Recursion;
+
 
  import java.util.Scanner;
 
