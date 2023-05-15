@@ -41,7 +41,7 @@
     }
     public static void main(String[] args) {
         int n = 4;
-
+ 
         char board[][] = new char[n][n];
 
         //initialize the board with 'x'

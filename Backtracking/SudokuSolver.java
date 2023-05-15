@@ -73,7 +73,7 @@ public class SudokuSolver {
             {9,6,0,4,0,5,3,0,0},
             {0,3,0,0,7,2,0,0,4},
             {0,4,9,0,3,0,0,5,7},
-            {8,2,7,0,0,9,0,1,3}};
+            {8,2,7,0,0,9,0,1,3}}; 
 
             // printSudoku(sudoku);
             sudokuSolverFunction(sudoku, 0, 0);
