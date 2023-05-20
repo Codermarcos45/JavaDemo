@@ -16,11 +16,10 @@ public class LargestAmongThreeNumbers {
         if(n > m) {
             if(n > p) {
                 System.out.println("Largest number is : "+n);
-                return;
             } else {
                 System.out.println("Largest number is : "+p);
             }
-        } else {
+        }      else {
             if(m > p) {
                 System.out.println("Largest number is : "+m);
             } else {

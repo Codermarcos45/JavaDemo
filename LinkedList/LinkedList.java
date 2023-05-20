@@ -30,6 +30,7 @@
 
 package LinkedList;
 
+import JavaDemo.ArraysQuestions.printSubarrays;
 
 public class LinkedList {
 
@@ -234,7 +235,7 @@ public class LinkedList {
         }
 
         //sz - n
-        int i = 0;
+        int i = 1;
         int iToFind = sz - n;
         Node prev = head;
 
@@ -246,13 +247,59 @@ public class LinkedList {
         prev.next = prev.next.next;
         return;
      }
+     
 
      /*
       PALINDROME : 
-      Chech if a linked list is Palindrome.
+      Check if a linked list is Palindrome.
      //Slow-fast concept
      //Half reverse LL
       */
+
+      public Node findNode(Node head) {  //finding midNode by using slow-fast or Turtle-Hare technique
+        Node turtle = head;
+        Node hare = head;
+
+        while(hare != null && hare.next != null) {
+            turtle = turtle.next;       //jump by 1 step
+            hare = hare.next.next;
+        }
+
+        return turtle;  //turtle is my midNode
+      }
+
+      public boolean isPalindrome() {
+        //base cases or corner cases
+        if(head == null || head.next == null) return false;
+
+        //Step 1 : Find mid node.
+        Node mid = findNode(head);      
+
+        //Step 2 : Reverse the second half : (3 variable & 4 step)
+        Node prev = null;
+        Node curr = mid;
+        Node next;
+
+        while(curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        Node right  = prev;         //After reversing, prev = Second half's head (which will be my right pointer)
+        Node left = head;           //left pointer
+
+        //Step 3 : Checking 1st half == 2nd half ?
+        while(right != null) {      
+            if(left.data != right.data) return false;       
+            left = left.next;
+            right = right.next;
+        }
+
+        return true;
+      }
+
 
     public static void main(String[] args) {
         LinkedList ll = new LinkedList();
@@ -260,18 +307,44 @@ public class LinkedList {
         ll.addLast(1);
         ll.addLast(2);
         ll.addLast(3);
-        ll.addLast(4);
-        ll.addLast(5);
-        ll.addLast(6);
+        ll.addLast(3);
+        ll.addLast(2);
+        ll.addLast(1);
 
         ll.printLinkedList();
-
-        ll.deleteNthFromEnd(4);     //delete 4
-        ll.printLinkedList();        
-
-
+        System.out.println(ll.isPalindrome());
         
 
     }
 
+    public void removeNthNodeFromEnd(int index) {
+        Node temp = head;
+        int sz = 0;
+
+        while(temp != null) {
+            temp = temp.next;
+            sz++;
+        }
+
+        if(index == sz) {
+            head = head.next;       //remove first operation
+            return;
+        }
+
+        int i = 1;
+        int iToFind = sz - index;
+        Node prev = head;
+
+        while(i < iToFind) {
+            prev = prev.next;
+            i++;
+        }
+
+        prev.next = prev.next.next;
+        return;
+
+    }
+
+
+    
 }

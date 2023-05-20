@@ -1,5 +1,15 @@
 import java.util.Scanner;
+
 public class ReverseOfDigits {
+
+    public static void reverse1(Integer n) {
+
+        String str = n.toString();
+
+        StringBuilder sb = new StringBuilder(str).reverse();
+
+        System.out.println(sb);
+    }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -18,6 +28,8 @@ public class ReverseOfDigits {
         }
 
         System.out.println("REVERSE FORM : "+reverse);
+
+        reverse1(500433);
     }
     
 }
