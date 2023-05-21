@@ -28,9 +28,10 @@
  After the step 1, garbage collector automatically delete the previous node.
  */
 
-package LinkedList;
+import java.net.NetPermission;
+import java.util.logging.LogRecord;
 
-import JavaDemo.ArraysQuestions.printSubarrays;
+import javax.imageio.plugins.tiff.FaxTIFFTagSet;
 
 public class LinkedList {
 
@@ -219,7 +220,7 @@ public class LinkedList {
      Find & Remove Nth node from end. (Iterative approach)
      */
 
-     public void deleteNthFromEnd(int n) {
+    public void deleteNthFromEnd(int n) {
         //calculating size
         int sz = 0;
         Node temp = head;
@@ -256,7 +257,7 @@ public class LinkedList {
      //Half reverse LL
       */
 
-      public Node findNode(Node head) {  //finding midNode by using slow-fast or Turtle-Hare technique
+    public Node findNode(Node head) {  //finding midNode by using slow-fast or Turtle-Hare technique
         Node turtle = head;
         Node hare = head;
 
@@ -268,7 +269,7 @@ public class LinkedList {
         return turtle;  //turtle is my midNode
       }
 
-      public boolean isPalindrome() {
+    public boolean isPalindrome() {
         //base cases or corner cases
         if(head == null || head.next == null) return false;
 
@@ -301,50 +302,238 @@ public class LinkedList {
       }
 
 
+      /*
+       Detect a Loop/Cycle in a LinkedList :
+       Approach : Floyd's cycle finding algorithm (slow-fast technique).
+       */
+
+    public static boolean detectingLoop() {
+        Node slow = head;
+        Node fast = head;
+
+        while(fast != null && fast.next != null) {
+            slow = slow.next;       // +1 moves
+            fast = fast.next.next;  // +2 moves
+
+            if(slow == fast) return true;       //cycle exists
+        }
+
+        return false;               //cycle doesn't exist
+      }
+     /*
+     Detecting loop true condtion code
+      head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.next.next.next = new Node(4);
+
+        head.next.next.next.next = head;
+        
+        System.out.println(detectingLoop());
+      */
+
+      /*
+       Remove a LOOP/CYCLE from a Linked List : 
+       Approach : Java Notebook
+       */
+    public static void removeCycle() {
+        // Step 1 : Detect loop
+        Node slow = head;
+        Node fast = head;
+        boolean cycle = false;
+
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast) {
+                cycle = true;       //loop detected!
+                break;
+            }    
+        }
+
+        if(cycle == false) return;      //loop not find!
+
+        // Step 2 : Find meeting point
+        Node prev = null;
+        slow = head;
+        
+
+        while(slow != fast) {
+            slow = slow.next;       //+1 moves
+            prev = fast;
+            fast = fast.next;       // +1 moves
+        }
+
+        // Step 3 : Remove cycle -> lastNode.next = null
+        prev.next = null;       //prev our lastNode so that prev.next = null & finally loop removed!!!
+
+      }
+
+    public Node mergeSort(Node headNode) {
+        //base case
+        if(headNode == null || headNode.next == null) return headNode;
+
+        Node mid = getMid(headNode);
+        Node rightHead = mid.next;
+        mid.next = null;
+
+        Node newLeft = mergeSort(headNode);
+        Node newRight = mergeSort(rightHead);
+
+        return merger(newLeft,newRight);
+      }
+
+    private Node merger(Node left, Node right) {
+        Node dumyLL = new Node(-1);
+        Node temp = dumyLL;
+
+        while(left != null && right != null) {
+            if(left.data <= right.data) {
+                temp.next = left;
+                left = left.next;
+                temp = temp.next;
+            } else {
+                temp.next = right;
+                right = right.next;
+                temp = temp.next;
+            }
+        }
+
+        while(left != null) {
+            temp.next = left;
+            left = left.next;
+            temp = temp.next;
+        }
+
+        while(right != null) {
+            temp.next = right;
+            right = right.next;
+            temp = temp.next;
+        }
+
+        return dumyLL.next;
+
+
+      }
+
+    private Node getMid(Node headNode) {
+            Node slow = headNode;
+            Node fast = headNode.next;
+
+            while(fast != null && fast.next != null) {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+
+            return slow;
+      }
+
+
+
+
+    /*
+    ZIG-ZAG Linked List :  MEDIUM LEVEL QUESTION
+    For a linked list of the form : L(1) -> L(2) -> L(3) -> L(4)... L(n-1) -> L(n)
+    convert it into a zig-zag form i.e. : L(1) -> L(n) -> L(2) -> L(n-1) -> L(3) -> L(n-2)...
+    |1| -> |2| -> |3| -> |4| -> |5|
+    Form :      |1| -> |5| -> |2| -> |4| -> |3| 
+
+    Approach : (slightly similar to palindrome)
+    Step 1 : Find mid (mid ==  1st half's lastNode)
+    Step 2 : Reverse second half
+    Step 3 : Alternate merging (most important step -->> Notebook)
+    */  
+    private Node findMidNode() {
+        Node slow = head;
+        Node fast = head.next;
+
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    public void zigZagLL() {
+        //Step 1 : Find mid 
+        Node mid = findMidNode();
+        
+
+        //Step 2 : Reverse 2nd half
+        Node prev = null;
+        Node curr = mid.next;
+        mid.next = null;
+        Node nxt;
+
+        while(curr != null) {
+            nxt = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nxt;
+        }
+
+        Node leftHead = head;               //1st half's head
+        Node rightHead = prev;               //2nd half's head
+        
+
+        //Step 3 : Alternate merging
+        
+        Node nextR, nextL;
+
+        while(leftHead != null && rightHead != null) {
+            //Zig-Zag steps
+            nextL = leftHead.next;
+            leftHead.next = rightHead;
+            nextR = rightHead.next;
+            rightHead.next = nextL;
+
+            //Updation steps
+            leftHead  = nextL;
+            rightHead = nextR;
+
+        }
+
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         LinkedList ll = new LinkedList();
 
         ll.addLast(1);
         ll.addLast(2);
         ll.addLast(3);
-        ll.addLast(3);
-        ll.addLast(2);
-        ll.addLast(1);
+        ll.addLast(4);
+        ll.addLast(5);
+        ll.addLast(6);
 
         ll.printLinkedList();
-        System.out.println(ll.isPalindrome());
-        
+        ll.zigZagLL(); 
+
+        ll.printLinkedList();
+
 
     }
-
-    public void removeNthNodeFromEnd(int index) {
-        Node temp = head;
-        int sz = 0;
-
-        while(temp != null) {
-            temp = temp.next;
-            sz++;
-        }
-
-        if(index == sz) {
-            head = head.next;       //remove first operation
-            return;
-        }
-
-        int i = 1;
-        int iToFind = sz - index;
-        Node prev = head;
-
-        while(i < iToFind) {
-            prev = prev.next;
-            i++;
-        }
-
-        prev.next = prev.next.next;
-        return;
-
-    }
-
-
     
 }
