@@ -28,10 +28,7 @@
  After the step 1, garbage collector automatically delete the previous node.
  */
 
-import java.net.NetPermission;
-import java.util.logging.LogRecord;
-
-import javax.imageio.plugins.tiff.FaxTIFFTagSet;
+import javax.xml.transform.Templates;
 
 public class LinkedList {
 
@@ -43,6 +40,7 @@ public class LinkedList {
             this.data = data;
             this.next = null;
         }
+
     }
 
     public static Node head;
@@ -83,14 +81,23 @@ public class LinkedList {
     }
 
 
-    public void printLinkedList() {     //O(n)
-        Node temp = head;
+    public  void printLinkedList(Node headNode) {     //O(n)
+        Node temp = headNode;
 
         while(temp != null) {
             System.out.print(temp.data+" -> ");
             temp = temp.next;
         }
         System.out.println(" null");
+    }
+
+    public static void printLinkedListRecursive(Node headNode) {
+        if(headNode == null) {
+            System.out.print("null");
+            return;
+        }
+        System.out.print(headNode.data+" -> ");
+        printLinkedListRecursive(headNode.next);
     }
 
     //Finding index == O(n) but linking == O(1) overall : O(n)
@@ -369,6 +376,32 @@ public class LinkedList {
 
       }
 
+    /*
+     MERGE SORT ON LINKEDLIST : 
+     Time complexity : O(nlogn)
+     Space complexity : O(n)
+     Inputs : 
+     /* 
+     LinkedList ll = new LinkedList();
+
+        ll.addLast (2);
+        ll.addLast(9);
+        ll.addLast(4);
+        ll.addLast(3);
+        ll.addLast(6);
+        ll.addLast(5);
+        ll.addLast(7);
+        ll.addLast(8);
+        ll.addLast(10);
+        ll.addLast(1);
+        ll.addLast(9);
+        ll.addFirst(11);
+
+        ll.printLinkedList(head);
+
+        head = ll.merge2Sort(head);
+        ll.printLinkedList(head); */
+    
     public Node mergeSort(Node headNode) {
         //base case
         if(headNode == null || headNode.next == null) return headNode;
@@ -495,45 +528,244 @@ public class LinkedList {
 
     }
     
+    public Node mid2Node(Node headNode) {
+        Node turtle = headNode, hare = headNode.next;
 
+        while(hare != null && hare.next != null) {
+            turtle = turtle.next;
+            hare = hare.next.next;
+        }
 
+        return turtle;
+    }
+    public Node merge2Sort(Node headNode) {
+        //base case
+        if(headNode == null || headNode.next == null) return headNode;
 
+        Node mid = mid2Node(headNode);
+        Node rightHead = mid.next;
+        mid.next = null;
 
+        Node left = merge2Sort(headNode);   //left part call
+        Node right = merge2Sort(rightHead);  //right part call
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public static void main(String[] args) {
-        LinkedList ll = new LinkedList();
-
-        ll.addLast(1);
-        ll.addLast(2);
-        ll.addLast(3);
-        ll.addLast(4);
-        ll.addLast(5);
-        ll.addLast(6);
-
-        ll.printLinkedList();
-        ll.zigZagLL(); 
-
-        ll.printLinkedList();
-
+        return merger2(left,right);
 
     }
+
+    public Node merger2(Node left, Node right) {
+        Node mergeLL = new Node(-1);
+        Node temp = mergeLL;
+
+        while(left != null && right != null) {
+            if(left.data <= right.data) {
+                temp.next = left;
+                left = left.next;
+                temp = temp.next;
+            } else {
+                temp.next  = right;
+                right = right.next;
+                temp = temp.next;
+                
+            }
+
+            
+        }
+
+        while(left != null) {
+            temp.next = left;
+            left = left.next;
+            temp = temp.next;
+        }
+
+        while(right != null) {
+            temp.next = right;
+            right = right.next;
+            temp = temp.next;
+        }
+
+        return mergeLL.next;
+    }
+
+
+
+    //print zigzag : 1)find mid, 2)reverse second half 3)alternate merging
+
+    public void zigzag(Node headNode) {
+        Node mid = findMid2(headNode);
+
+        //reverse second half
+        Node rightHead = mid.next;
+        mid.next = null;
+
+        Node prev = null;
+        Node curr = rightHead;
+        Node next;
+
+        while(curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        rightHead = prev;
+
+        Node left = headNode;
+        Node right = rightHead;
+        Node leftPntr = null;
+        Node ritPntr = null;
+
+        while(left != null && right != null) {
+            //zigzag steps
+            leftPntr = left.next;
+            ritPntr = right.next;
+            left.next = right;
+            right.next = leftPntr;
+
+            //updation steps
+            left = leftPntr;
+            right = ritPntr;
+        }
+
+    }
+
+    private Node findMid2(Node headNode) {
+        Node turtle = headNode;
+        Node hare = headNode.next;
+
+        while(hare != null && hare.next != null) {
+            turtle = turtle.next;
+            hare = hare.next.next;
+        }
+        return turtle;
+    }
+
+
+    public static Node reverseRecursive(Node headNode) {
+        if(headNode.next == null) return headNode;
+
+        Node newNode = reverseRecursive(headNode.next);
+        headNode.next.next = headNode;
+        headNode.next = null;
+        return newNode;
+    }
+
+    public boolean isPalindrome2(Node headNode) {
+        //find mid
+        //reverse 2nd half
+        //checking 1st & 2nd half data
+        Node mid = findMid2(headNode);
+        Node left = headNode;
+        Node right = mid.next;
+        mid.next = null;
+
+        Node prev = null;
+        Node curr = right;
+        Node next;
+
+        while(curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        right = prev;
+
+        while(right != null) {
+            if(left.data != right.data) return false;
+            left = left.next;
+            right = right.next;
+        }
+
+        return true;
+    }
+
+    /*
+    TWIN SUM PROBLEM : 
+    Find the maximum twin sum of a linkedlist  of even length.
+    Twin of any node at (i)th index is the node at (n-1-i)th index. Twin sum is the sum of values of a node and its twin.
+     */
+
+    public int twinSum(Node headNode) {
+        if(head == null) return Integer.MIN_VALUE;      //in case of linked list    
+        if(head.next == null) return head.data;         // if linked list contains 1 values
+
+        //Step 1 : Find mid
+        Node mid = findMid2(headNode);                  //mid
+        Node right = mid.next;
+        mid.next = null;
+
+        //Step 2 : Reverse 2nd half
+        Node prev = null;
+        Node curr = right;
+        Node next;
+
+        while(curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        right = prev;   //prev is head of reversed 2nd half
+        Node tempLeft = headNode;
+
+
+        Node tempRight = right;
+        int maxSum = Integer.MIN_VALUE;
+
+        while(tempRight != null) {
+            if((tempLeft.data + tempRight.data) > maxSum) {
+                maxSum = tempLeft.data + tempRight.data;
+            }
+            tempLeft = tempLeft.next;
+            tempRight = tempRight.next;
+        }
+
+        return maxSum;
+    }
+
+    /*
+     * Copy List with random pointer : 
+     * Construct a deep copy of a linked list where each node contains an additional random pointer, which 
+     * could point to any node in the list or null.
+     * An interesting question!
+     */
+
+    public static Node deepCopy(Node headNode) {
+        Node finalNode = new Node(-1);
+        Node temp = finalNode;
+        Node h = headNode;
+
+        while(h != null) {
+            Node newNode = new Node(h.data);
+            temp.next = newNode;
+            temp = temp.next;
+            h = h.next;
+        }
+
+        return finalNode.next;
+    }
+
+    public static void main(String[] args) {
+        
+        LinkedList l1 = new LinkedList();
+
+        l1.addFirst(1);
+        l1.addLast(200);
+        l1.addLast(3);
+        l1.addLast(40);
+        l1.addLast(5);
+        l1.addLast(6);
+        l1.printLinkedList(head);
+        
+        Node newNode = deepCopy(head);
+
+        printLinkedListRecursive(newNode);
+
+    }
+
+    
     
 }
